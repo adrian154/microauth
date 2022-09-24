@@ -1,0 +1,118 @@
+body, html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    background-color: #111;
+    margin: 0;
+    font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    color: #212427;
+}
+
+main {
+    margin: auto;
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 2em;
+    width: 22em;
+    box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+    main {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+}
+
+h1 {
+    font-weight: normal;
+    font-size: 1.5em;
+    text-align: center;
+    margin-top: 0;
+}
+
+input[type="text"], input[type="password"] {
+    border: 1px solid #ccc;
+    padding: 1em;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0.6em 0;
+    border-radius: 3px;
+    outline: 2px solid rgba(0, 0, 0, 0%);
+    transition: 0.2s outline;
+    font-size: 11pt;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    outline: 1px solid #397bfe;
+}
+
+button[type="submit"] {
+    width: 100%;
+    margin-top: 2em;
+    border: none;
+    background: #246dff;
+    color: #ffffff;
+    padding: 0.75em 0.5em;
+    font-size: 1em;
+    cursor: pointer;
+    transition: 0.5s background;
+}
+
+button[type="submit"]:hover {
+    background: #2461db;
+}
+
+/* get rid of the blue background that Chrome applies to autocompleted forms */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+}
+
+#forgot-password {
+    float: right;
+    font-size: 10pt;
+    font-weight: 500;
+}
+
+#forgot-password a {
+    text-decoration: none;
+}
+
+#forgot-password a,
+#forgot-password a:visited {
+    color: #397bfe;
+}
+
+/* when a field is selected, slide the form placeholder to the top of the element */
+.field {
+    position: relative;
+}
+
+.field input + label {
+    font-family: sans-serif;
+    font-size: 11pt;
+    position: absolute;
+    top: 50%;
+    left: 1em;
+    transform: translateY(-50%);
+    background-color: #ffffff;
+    color: #999;
+    padding: 1px 2px;
+    transition: 0.2s;
+}
+
+.field input:focus + label,
+.field input:valid + label {
+    top: -2px;
+    font-size: 10pt;
+    transform: none;
+}
+
+.field input:focus + label {
+    color: #397bfe;
+}

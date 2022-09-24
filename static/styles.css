@@ -42,7 +42,7 @@ h1 {
 #continue {
     text-align: center;
     margin-top: 0.5em;
-    margin-bottom: 2em;
+    margin-bottom: 2.5em;
 }
 
 input[type="text"], input[type="password"] {
@@ -50,15 +50,10 @@ input[type="text"], input[type="password"] {
     padding: 1em;
     width: 100%;
     box-sizing: border-box;
-    margin: 0.6em 0;
     border-radius: 3px;
     outline: none;
     transition: 0.2s border;
     font-size: 11pt;
-}
-
-input[type="password"] {
-    margin-bottom: 0;
 }
 
 input[type="text"]:focus, input[type="password"]:focus {
@@ -112,6 +107,7 @@ input:-webkit-autofill:focus {
 /* when a field is selected, slide the form placeholder to the top of the element */
 .field {
     position: relative;
+    margin: 1.1em 0;
 }
 
 .field input + label {
@@ -129,7 +125,7 @@ input:-webkit-autofill:focus {
 
 .field input:focus + label,
 .field input:valid + label {
-    top: -2px;
+    top: -10px;
     font-size: 10pt;
     transform: none;
 }
@@ -144,6 +140,7 @@ body.error .field input:valid + label {
 }
 
 #error {
+    display: none;
     font-size: 10pt;
     color: var(--error);
 }

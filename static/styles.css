@@ -1,3 +1,8 @@
+body {
+    --form-accent: #397bfe;
+    --error: #ef2121; 
+}
+
 body, html {
     height: 100%;
 }
@@ -31,7 +36,13 @@ h1 {
     font-weight: normal;
     font-size: 1.5em;
     text-align: center;
-    margin-top: 0;
+    margin: 0;
+}
+
+#continue {
+    text-align: center;
+    margin-top: 0.5em;
+    margin-bottom: 2em;
 }
 
 input[type="text"], input[type="password"] {
@@ -41,13 +52,22 @@ input[type="text"], input[type="password"] {
     box-sizing: border-box;
     margin: 0.6em 0;
     border-radius: 3px;
-    outline: 2px solid rgba(0, 0, 0, 0%);
-    transition: 0.2s outline;
+    outline: none;
+    transition: 0.2s border;
     font-size: 11pt;
 }
 
+input[type="password"] {
+    margin-bottom: 0;
+}
+
 input[type="text"]:focus, input[type="password"]:focus {
-    outline: 1px solid #397bfe;
+    border: 1px solid var(--form-accent);
+}
+
+body.error input[type="text"],
+body.error input[type="password"] {
+    border: 1px solid var(--error);
 }
 
 button[type="submit"] {
@@ -74,9 +94,10 @@ input:-webkit-autofill:focus {
 }
 
 #forgot-password {
-    float: right;
+    text-align: right;
     font-size: 10pt;
     font-weight: 500;
+    margin: 0.5em 0;
 }
 
 #forgot-password a {
@@ -85,7 +106,7 @@ input:-webkit-autofill:focus {
 
 #forgot-password a,
 #forgot-password a:visited {
-    color: #397bfe;
+    color: var(--form-accent);
 }
 
 /* when a field is selected, slide the form placeholder to the top of the element */
@@ -114,5 +135,15 @@ input:-webkit-autofill:focus {
 }
 
 .field input:focus + label {
-    color: #397bfe;
+    color: var(--form-accent);
+}
+
+body.error .field input:focus + label,
+body.error .field input:valid + label {
+    color: var(--error);
+}
+
+#error {
+    font-size: 10pt;
+    color: var(--error);
 }

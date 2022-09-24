@@ -7,9 +7,10 @@
         <title>Log in</title>
         <link rel="stylesheet" href="styles.css">
     </head>
-    <body>
+    <body class="error">
         <main>
-            <h1>Log In</h1>
+            <h1>Log in</h1>
+            <p id="continue">to continue to sqlite-browser</p>
             <form>
                 <div class="field">
                     <input type="text" id="email" spellcheck="false" autocapitalize="none" autocomplete="username" name="email" required>
@@ -19,7 +20,8 @@
                     <input type="password" id="password" spellcheck="false" autocapitalize="none" autocomplete="current-password" name="password" required>
                     <label for="password">Password</label>
                 </div>
-                <span id="forgot-password"><a href="#">Forgot password?</a></span>
+                <span id="error">Wrong email or password</span>
+                <p id="forgot-password"><a href="#">Forgot password?</a></p>
                 <button type="submit">Next</button>
             </form>
         </main>

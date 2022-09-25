@@ -1,0 +1,10 @@
+#technical-details {
+    padding: 1em;
+    background-color: rgba(255, 0, 0, 15%);
+    border-left: 2px solid #ff0000;
+    margin-top: 1.5em;
+}
+
+#technical-details p {
+    margin-top: 0;
+}

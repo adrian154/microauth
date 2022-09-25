@@ -20,7 +20,7 @@ main {
     background-color: #ffffff;
     border-radius: 5px;
     padding: 2em;
-    width: 22em;
+    width: 400px;
     box-sizing: border-box;
 }
 
@@ -39,10 +39,8 @@ h1 {
     margin: 0;
 }
 
-#continue {
-    text-align: center;
-    margin-top: 0.5em;
-    margin-bottom: 2.5em;
+b {
+    font-weight: 500;
 }
 
 input[type="text"], input[type="password"] {
@@ -67,7 +65,7 @@ body.error input[type="password"] {
 
 button[type="submit"] {
     width: 100%;
-    margin-top: 2em;
+    margin-top: 1em;
     border: none;
     background: #246dff;
     color: #ffffff;
@@ -88,20 +86,11 @@ input:-webkit-autofill:focus {
     -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
 }
 
-#forgot-password {
-    text-align: right;
-    font-size: 10pt;
-    font-weight: 500;
-    margin: 0.5em 0;
-}
-
-#forgot-password a {
-    text-decoration: none;
-}
-
-#forgot-password a,
-#forgot-password a:visited {
+a,
+a:visited {
     color: var(--form-accent);
+    text-decoration: none;
+    font-weight: 500;
 }
 
 /* when a field is selected, slide the form placeholder to the top of the element */
@@ -143,4 +132,12 @@ body.error .field input:valid + label {
     display: none;
     font-size: 10pt;
     color: var(--error);
+}
+
+#logo {
+    display: block;
+    max-width: 4em;
+    max-height: 4em;
+    margin: auto;
+    margin-bottom: 1.5em;
 }

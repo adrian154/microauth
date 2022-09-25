@@ -5,13 +5,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noindex, nofollow">
         <title>Log in</title>
-        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="stylesheets/all.css">
+        <link rel="stylesheet" href="stylesheets/login.css">
     </head>
     <body>
         <main>
+            <img id="logo" src="https://f004.backblazeb2.com/file/photobox-prod/ijA0oX4_h6owLsji">
             <h1>Log in</h1>
             <p id="continue">to continue to sqlite-browser</p>
-            <form>
+            <form action="/login" method="post">
                 <div class="field">
                     <input type="text" id="email" spellcheck="false" autocapitalize="none" autocomplete="username" name="email" required>
                     <label for="email">Email address</label>
@@ -20,9 +22,10 @@
                     <input type="password" id="password" spellcheck="false" autocapitalize="none" autocomplete="current-password" name="password" required>
                     <label for="password">Password</label>
                 </div>
-                <span id="error">Wrong email or password</span>
+                <span id="error"></span>
                 <p id="forgot-password"><a href="#">Forgot password?</a></p>
                 <button type="submit">Next</button>
+                <p>Don't have an account? <a href="#">Sign up</a></p>
             </form>
         </main>
     </body>

@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-const config = require("./config.json");
+const config = require("../config.json");
 
 app.use((req, res, next) => {
     res.header("X-Content-Type-Options", "nosniff")

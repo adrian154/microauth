@@ -1,14 +1,8 @@
-#continue {
-    text-align: center;
-    margin-top: 0.5em;
-    margin-bottom: 2.5em;
+label {
+    font-size: 11pt;
 }
 
 #forgot-password {
+    float: right;
     font-size: 10pt;
-    margin: 0.5em 0;
-}
-
-.field + #error {
-    margin-bottom: 0;
 }

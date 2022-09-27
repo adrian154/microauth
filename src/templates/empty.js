@@ -1,11 +1,12 @@
 const { html, head, meta, title, link, body, main} = require("html-generator");
+const config = require("../../config.json");
 
 module.exports = (props, bodyContent) => "<!DOCTYPE html>" + html(
     head(
         meta({charset: "utf-8"}),
         meta({name: "viewport", content: "width=device-width, initial-scale=1"}),
         meta({name: "robots", content: "noindex, nofollow"}),
-        title(props.title),
+        title(props.title + " - " + config.tenant.friendlyName),
         link({rel: "stylesheet", href: "/stylesheets/all.css"}),
         props.stylesheet && link({rel: "stylesheet", href: props.stylesheet})
     ),

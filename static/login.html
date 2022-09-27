@@ -12,7 +12,6 @@
         <main>
             <img id="logo" src="https://f004.backblazeb2.com/file/photobox-prod/ijA0oX4_h6owLsji">
             <h1>Log in</h1>
-            <p id="continue">to continue to sqlite-browser</p>
             <form action="/login" method="post">
                 <div class="field">
                     <input type="text" id="email" spellcheck="false" autocapitalize="none" autocomplete="username" name="email" required>
@@ -23,7 +22,11 @@
                     <label for="password">Password</label>
                 </div>
                 <span id="error"></span>
-                <p id="forgot-password"><a href="#">Forgot password?</a></p>
+                <p style="margin: 0.5em 0;">
+                    <input type="checkbox" id="remember-me" name="remember-me">
+                    <label for="remember-me">Remember Me</label>
+                    <a href="#" id="forgot-password">Forgot password?</a>
+                </p>
                 <button type="submit">Next</button>
                 <p>Don't have an account? <a href="#">Sign up</a></p>
             </form>

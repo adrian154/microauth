@@ -58,8 +58,8 @@ input[type="text"]:focus, input[type="password"]:focus {
     border: 1px solid var(--form-accent);
 }
 
-body.error input[type="text"],
-body.error input[type="password"] {
+form.error input[type="text"],
+form.error input[type="password"] {
     border: 1px solid var(--error);
 }
 
@@ -123,8 +123,8 @@ a:visited {
     color: var(--form-accent);
 }
 
-body.error .field input:focus + label,
-body.error .field input:valid + label {
+form.error .field input:focus + label,
+form.error .field input:valid + label {
     color: var(--error);
 }
 
@@ -132,6 +132,10 @@ body.error .field input:valid + label {
     display: none;
     font-size: 10pt;
     color: var(--error);
+}
+
+form.error #error {
+    display: initial;
 }
 
 #logo {

@@ -99,16 +99,17 @@ module.exports = (req, res) => {
     const authStateId = authStates.begin(authState);
     authState.id = authStateId;
 
+    const needsReauth = !isNaN(authRequest.max_age) && Date.now() - req.session.createdTime > authRequest.max_age * 1000 || authRequest.prompt.includes("login")
+
     // if the user isn't signed in and the client has requested that we do not prompt, indicate that authorization failed
-    if(!req.session && authRequest.prompt.includes("none")) {
+    if((!req.session || needsReauth) && authRequest.prompt.includes("none")) {
         const callbackUrl = new URL(authRequest.redirectUri);
         callbackUrl.searchParams.set("error", "login_required");
         res.redirect(callbackUrl);
         return;
     }
     
-    // if the user is already signed in, jump ahead to consent if the client has not requested re-authentication
-    const needsReauth = !isNaN(authRequest.max_age) && Date.now() - req.session.createdTime > authRequest.max_age * 1000 || authRequest.prompt.includes("login");
+    // if the user is already signed in, jump ahead to consent if the client has not requested re-authentication;
     if(req.session && !needsReauth) {
         authState.stage = "consent";
         authState.user = req.session.user;

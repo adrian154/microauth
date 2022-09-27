@@ -1,4 +1,4 @@
-const { form, input, p, span, div, label, a, button } = require("html-generator");
+const { form, input, p, span, div, label, a, button, script, raw } = require("html-generator");
 const base = require("./base");
 
 module.exports = props => base({title: "Log In", stylesheet: "/stylesheets/login.css"}, [

@@ -2,7 +2,7 @@ const Database = require("better-sqlite3");
 const config = require("../config.json");
 const Table = require("./crud");
 
-const db = new Database("microauth.db");
+const db = new Database("data/microauth.db");
 db.pragma("foreign_keys = ON");
 db.pragma("journal_mode = WAL");
 

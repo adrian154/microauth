@@ -25,5 +25,6 @@ app.get("/authorize", require("./routes/authorize"));
 app.get("/login", require("./middleware/require-auth-state")("start"), require("./routes/login"));
 app.post("/login", require("./middleware/require-auth-state")("start"), require("./routes/login"));
 app.get("/consent", require("./middleware/require-auth-state")("consent"), require("./routes/consent"));
+app.get("/finish", require("./middleware/require-auth-state")("consent"), require("./routes/finish"));
 
 app.listen(config.port, () => console.log("Listening"));

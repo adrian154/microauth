@@ -41,6 +41,24 @@ const readRequestParams = params => {
         throw new Error("The requested redirect URI is not in the list of allowed callbacks");
     }
 
+    if(params.request) {
+        callbackUrl.searchParams.set("error", "request_not_supported");
+        res.redirect(callbackUrl);
+        return;
+    }
+
+    if(params.request_uri) {
+        callbackUrl.searchParams.set("error", "request_uri_not_supported");
+        res.redirect(callbackUrl);
+        return;
+    }
+
+    if(params.registration) {
+        callbackUrl.searchParams.set("error", "registration_not_supported");
+        res.redirect(callbackUrl);
+        return;
+    }
+
     if(params.response_mode && !RESPONSE_MODES.includes(params.response_mode)) {
         throw new Error(`Unsupported response_mode "${params.response_mode}"`);
     }
@@ -99,18 +117,17 @@ module.exports = (req, res) => {
     const authStateId = authStates.begin(authState);
     authState.id = authStateId;
 
-    const needsReauth = !isNaN(authRequest.max_age) && Date.now() - req.session.createdTime > authRequest.max_age * 1000 || authRequest.prompt.includes("login")
+    const authNeeded = !req.session ||
+                       authRequest.prompt.includes("login") ||
+                       !isNaN(authRequest.max_age) && Date.now() - req.session.createdTime > authRequest.max_age * 1000;
 
-    // if the user isn't signed in and the client has requested that we do not prompt, indicate that authorization failed
-    if((!req.session || needsReauth) && authRequest.prompt.includes("none")) {
-        const callbackUrl = new URL(authRequest.redirectUri);
+    if(authNeeded && authRequest.prompt.includes("none")) {
         callbackUrl.searchParams.set("error", "login_required");
         res.redirect(callbackUrl);
         return;
     }
     
-    // if the user is already signed in, jump ahead to consent if the client has not requested re-authentication;
-    if(req.session && !needsReauth) {
+    if(!authNeeded) {
         authState.stage = "consent";
         authState.user = req.session.user;
     }

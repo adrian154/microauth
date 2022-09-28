@@ -35,6 +35,14 @@ const sessionsTable = new Table(db, "sessions", [
     "FOREIGN KEY (userId) REFERENCES users(id)"
 ]);
 
+// authorization codes
+const authCodesTable = new Table(db, "authCodes", [
+    "id STRING PRIMARY KEY",
+    "clientId STRING NOT NULL",
+    "expiresTimestamp INTEGER NOT NULL",
+    "jwt STRING NOT NULL"
+]);
+
 const Users = {
     getById: usersTable.select("*").where("id = ?").fn(),
     getByEmail: usersTable.select("*").where("email = ?").fn()
@@ -51,9 +59,16 @@ const Sessions = {
     deleteExpired: sessionsTable.delete("expiresTimestamp < ?").fn()
 };
 
+const AuthCodes = {
+    get: authCodesTable.select("*").where("id = ? AND clientId = ?").fn(),
+    delete: authCodesTable.delete("id = ?").fn(),
+    deleteExpired: authCodesTable.delete("expiresTimestamp < ?").fn()
+};
+
 setInterval(() => {
     console.log("Cleaning up database...");
     Sessions.deleteExpired();
+    AuthCodes.deleteExpired();
 }, config.dbCleanupInterval * 1000);
 
-module.exports = {Clients, Sessions, Users};
+module.exports = {Clients, Sessions, Users, AuthCodes};

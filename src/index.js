@@ -22,9 +22,9 @@ app.use(require("./middleware/auth-state"));
 // This is the endpoint that clients are redirected to at the beginning of an authentication request.
 // FIXME: OIDC spec says we must support both GET and POST for this endpoint
 app.get("/authorize", require("./routes/authorize"));
-app.get("/login", require("./middleware/require-auth-state")("start"), require("./routes/login"));
-app.post("/login", require("./middleware/require-auth-state")("start"), require("./routes/login"));
-app.get("/consent", require("./middleware/require-auth-state")("consent"), require("./routes/consent"));
-app.get("/finish", require("./middleware/require-auth-state")("consent"), require("./routes/finish"));
+app.get("/login",   require("./middleware/auth-stage")("start"), require("./routes/login"));
+app.post("/login",  require("./middleware/auth-stage")("start"), require("./routes/login"));
+app.get("/consent", require("./middleware/auth-stage")("consent"), require("./routes/consent"));
+app.get("/finish",  require("./middleware/auth-stage")("consent"), require("./routes/finish"));
 
 app.listen(config.port, () => console.log("Listening"));

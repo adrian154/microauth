@@ -1,3 +1,4 @@
+// Middleware to attach authState variable to requests
 const AuthStates = require("../auth-state");
 
 module.exports = (req, res, next) => {

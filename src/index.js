@@ -4,6 +4,10 @@ const app = express();
 
 const config = require("../config.json");
 
+if(config.trustProxy) {
+    app.enable("trust proxy");
+}
+
 app.use((req, res, next) => {
     res.header("X-Content-Type-Options", "nosniff")
        .header("Referrer-Policy", "no-referrer")

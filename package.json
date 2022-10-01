@@ -1,0 +1,30 @@
+{
+    "name": "microauth",
+    "version": "1.0.0",
+    "description": "A lightweight, OIDC-based, self-hosted SSO solution.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/adrian154/microauth.git"
+    },
+    "keywords": [
+        "sso",
+        "oidc",
+        "selfhost"
+    ],
+    "author": "Adrian Z",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/adrian154/microauth/issues"
+    },
+    "homepage": "https://github.com/adrian154/microauth#readme",
+    "dependencies": {
+        "better-sqlite3": "^7.6.2",
+        "cookie-parser": "^1.4.6",
+        "express": "^4.18.1",
+        "html-generator": "github:adrian154/html-generator"
+    }
+}

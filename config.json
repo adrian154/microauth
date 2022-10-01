@@ -20,5 +20,6 @@
     "urlBase": "http://localhost/",
     "idTokenLifespan": 86400,
     "accessTokenLifespan": 86400,
-    "authCodeLifespan": 300
+    "authCodeLifespan": 300,
+    "trustProxy": true
 }

@@ -1,4 +1,4 @@
-const {generateId} = require("./util/crypto-helper");
+const {generateId} = require("./crypto-helper");
 const config = require("../config.json");
 
 const states = {};

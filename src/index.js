@@ -11,7 +11,6 @@ app.use((req, res, next) => {
     next();
 });
 
-
 app.use(express.static("static"));
 
 app.use(cookieParser());
@@ -21,7 +20,9 @@ app.use(require("./middleware/auth-state"));
 
 // This is the endpoint that clients are redirected to at the beginning of an authentication request.
 // FIXME: OIDC spec says we must support both GET and POST for this endpoint
-app.get("/authorize", require("./routes/authorize"));
+app.get("/authorize", require("./routes/oauth/authorize"));
+app.get("/token", require("./routes/oauth/get-token"));
+
 app.get("/login",   require("./middleware/auth-stage")("start"), require("./routes/login"));
 app.post("/login",  require("./middleware/auth-stage")("start"), require("./routes/login"));
 app.get("/consent", require("./middleware/auth-stage")("consent"), require("./routes/consent"));

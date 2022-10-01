@@ -1,13 +1,11 @@
 {
     "tenant": {
         "logoUrl": "https://f004.backblazeb2.com/file/photobox-prod/ijA0oX4_h6owLsji",
-        "friendlyName": "BitHole"
+        "friendlyName": "BitHole",
+        "secondFactor": "disabled"
     },
     "firstFactor": {
 
-    },
-    "secondFactor": {
-        "level": "disabled"
     },
     "sessions": {
         "maxAge": 28800,
@@ -18,5 +16,9 @@
         "cleanupInterval": 60
     }, 
     "port": 80,
-    "dbCleanupInterval": 3600
+    "dbCleanupInterval": 3600,
+    "urlBase": "http://localhost/",
+    "idTokenLifespan": 86400,
+    "accessTokenLifespan": 86400,
+    "authCodeLifespan": 300
 }

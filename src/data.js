@@ -8,14 +8,14 @@ db.pragma("journal_mode = WAL");
 
 const usersTable = new Table(db, "users", [
     "id STRING PRIMARY KEY",
-    "email STRING NOT NULL",
+    "email STRING NOT NULL UNIQUE",
     "passwordHash STRING NOT NULL",
-    "salt STRING NOT NULL"
+    "salt STRING NOT NULL",
 ]);
 
 const clientsTable = new Table(db, "clients", [
     "id STRING PRIMARY KEY",
-    "clientSecret STRING NOT NULL",
+    "secret STRING NOT NULL",
     "friendlyName STRING NOT NULL",
 ]);
 
@@ -26,12 +26,17 @@ const allowedCallbacksTable = new Table(db, "allowedCallbacks", [
     "FOREIGN KEY (clientId) REFERENCES clients(id)"
 ]);
 
+db.exec("INSERT OR IGNORE INTO clients VALUES ('testclientid', 'testclientsecret', 'Test Client')");
+db.exec("INSERT OR IGNORE INTO allowedCallbacks VALUES ('testclientid', 'https://google.com/')")
+db.exec("INSERT OR IGNORE INTO users VALUES ('testuserid', 'user@mail.com', 'qiug9zTaU9hBBKBcOAxwgAbCdhj7gHXSGRhDA6hll58BWMnXEaxxPAc/uk+Hw45VdODzT7j5mFhGDJE9cjXO8A==', 'Fm3zil5BNjpmgJK/zqUhkg==')")
+
 const sessionsTable = new Table(db, "sessions", [
     "id STRING PRIMARY KEY",
     "userId STRING NOT NULL",
     "initiatorAddr STRING NOT NULL",
     "createdTimestamp INTEGER NOT NULL",
     "expiresTimestamp INTEGER NOT NULL",
+    "lastAuthTimestamp INTEGER NOT NULL",
     "FOREIGN KEY (userId) REFERENCES users(id)"
 ]);
 
@@ -40,7 +45,14 @@ const authCodesTable = new Table(db, "authCodes", [
     "id STRING PRIMARY KEY",
     "clientId STRING NOT NULL",
     "expiresTimestamp INTEGER NOT NULL",
-    "jwt STRING NOT NULL"
+    "accessToken STRING NOT NULL",
+    "idToken STRING NOT NULL",
+]);
+
+const accessTokensTable = new Table(db, "accessTokens", [
+    "id STRING PRIMARY KEY",
+    "expiresTimestamp INTEGER NOT NULL",
+    "grantedScopes STRING NOT NULL"
 ]);
 
 const Users = {
@@ -54,21 +66,31 @@ const Clients = {
 };
 
 const Sessions = {
+    add: sessionsTable.insert(["id", "userId", "initiatorAddr", "createdTimestamp", "expiresTimestamp", "lastAuthTimestamp"]).fn(),
+    _updateAuthTimestamp: sessionsTable.update({lastAuthTimestamp: ":timestamp"}).where("id = :id").fn(),
+    renewAuthTimestamp: id => Sessions._updateAuthTimestamp({timestamp: Date.now(), id}),  
     get: sessionsTable.select("*").where("id = ?").fn(),
     delete: sessionsTable.delete("id = ?").fn(),
     deleteExpired: sessionsTable.delete("expiresTimestamp < ?").fn()
 };
 
 const AuthCodes = {
+    add: authCodesTable.insert(["id", "clientId", "expiresTimestamp", "accessToken", "idToken"]).fn(),
     get: authCodesTable.select("*").where("id = ? AND clientId = ?").fn(),
     delete: authCodesTable.delete("id = ?").fn(),
     deleteExpired: authCodesTable.delete("expiresTimestamp < ?").fn()
+};
+
+const AccessTokens = {
+    add: accessTokensTable.insert(["id", "expiresTimestamp", "grantedScopes"]).fn(),
+    deleteExpired: accessTokensTable.delete("expiresTimestamp < ?").fn()
 };
 
 setInterval(() => {
     console.log("Cleaning up database...");
     Sessions.deleteExpired();
     AuthCodes.deleteExpired();
+    AccessTokens.deleteExpired();
 }, config.dbCleanupInterval * 1000);
 
-module.exports = {Clients, Sessions, Users, AuthCodes};
+module.exports = {Clients, Sessions, Users, AuthCodes, AccessTokens};

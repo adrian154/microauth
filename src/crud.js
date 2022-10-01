@@ -114,7 +114,7 @@ class UpdateQuery extends Query {
     }
 
     query() {
-        const parts = ["UPDATE", this.table.name, "SET", Object.entries(this.values).map(value => value.join('=').join(','))];
+        const parts = ["UPDATE", this.table.name, "SET", Object.entries(this.values).map(value => value.join('=')).join(',')];
         if(this.condition) parts.push("WHERE", this.condition);
         return parts.join(" ");
     }

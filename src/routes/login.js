@@ -1,5 +1,6 @@
-const cryptoHelper = require("../util/crypto-helper");
 const loginTemplate = require("../templates/login");
+const cryptoHelper = require("../crypto-helper");
+const beginSession = require("../begin-session");
 const {Users} = require("../data");
 
 module.exports = async (req, res) => {
@@ -26,6 +27,7 @@ module.exports = async (req, res) => {
 
         req.authState.stage = "consent";
         req.authState.user = user;
+        beginSession(req, res);
         res.redirect(req.authState.getNextUrl());
 
     }

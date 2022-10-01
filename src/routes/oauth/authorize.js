@@ -1,8 +1,8 @@
-const errorTemplate = require("../templates/error");
-const authStates = require("../auth-state")
-const {Clients} = require("../data");
+const errorTemplate = require("../../templates/error");
+const authStates = require("../../auth-state")
+const {Clients} = require("../../data");
 
-const RESPONSE_MODES = ["query", "fragment"];
+const KNOWN_SCOPES = ["openid", "profile", "email"];
 
 const readRequestParams = params => {
 
@@ -10,7 +10,7 @@ const readRequestParams = params => {
         throw new Error('Missing request parameter "scope"');
     }
 
-    const scopes = params.scope.split(" ");
+    const scopes = params.scope.split(" ").filter(scope => KNOWN_SCOPES.includes(scope));
     if(!scopes.includes("openid")) {
         throw new Error('Requested scopes did not include "openid"');
     }
@@ -41,6 +41,8 @@ const readRequestParams = params => {
         throw new Error("The requested redirect URI is not in the list of allowed callbacks");
     }
 
+    const callbackUrl = new URL(redirectUri);
+
     if(params.request) {
         callbackUrl.searchParams.set("error", "request_not_supported");
         res.redirect(callbackUrl);
@@ -59,11 +61,9 @@ const readRequestParams = params => {
         return;
     }
 
-    if(params.response_mode && !RESPONSE_MODES.includes(params.response_mode)) {
+    if(params.response_mode && params.response_mode !== "query") {
         throw new Error(`Unsupported response_mode "${params.response_mode}"`);
     }
-
-    const responseMode = params.response_mode || "query";
 
     const prompt = params.prompt?.split(" ") || [];
     if(prompt.includes("none") && prompt.length > 1) {
@@ -81,9 +81,8 @@ const readRequestParams = params => {
     return {
         scopes,
         client,
-        redirectUri,
+        callbackUrl,
         state: params.state,
-        responseMode,
         nonce: params.nonce,
         prompt,
         maxAge
@@ -119,7 +118,7 @@ module.exports = (req, res) => {
 
     const authNeeded = !req.session ||
                        authRequest.prompt.includes("login") ||
-                       !isNaN(authRequest.max_age) && Date.now() - req.session.createdTime > authRequest.max_age * 1000;
+                       !isNaN(authRequest.max_age) && Date.now() - req.session.lastAuthTimestamp > authRequest.max_age * 1000;
 
     if(authNeeded && authRequest.prompt.includes("none")) {
         callbackUrl.searchParams.set("error", "login_required");

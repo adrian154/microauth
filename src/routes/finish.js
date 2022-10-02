@@ -1,7 +1,7 @@
 const {AccessTokens, AuthCodes} = require("../data");
 const {generateId} = require("../crypto-helper");
+const {getClaims} = require("../get-claims");
 const config = require("../../config.json");
-const getClaims = require("../get-claims");
 const createJwt = require("../jwt");
 
 module.exports = (req, res) => {
@@ -29,15 +29,16 @@ module.exports = (req, res) => {
     // generate access token
     AccessTokens.add({
         id: accessToken,
-        expiresTimestamp: Date.now() + config.accessTokenLifespan,
-        grantedScopes: grantedScopes.join(" ")
+        expiresTimestamp: Date.now() + config.accessTokenLifespan * 1000,
+        grantedScopes: grantedScopes.join(" "),
+        userId: req.authState.user.id
     });
 
     // generate authorization code
     AuthCodes.add({
         id: authCode,
         clientId: authRequest.client.id,
-        expiresTimestamp: Date.now() + config.authCodeLifespan,
+        expiresTimestamp: Date.now() + config.authCodeLifespan * 1000,
         accessToken,
         idToken
     });

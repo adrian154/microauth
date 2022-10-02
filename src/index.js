@@ -22,14 +22,27 @@ app.use(express.urlencoded({extended: false}));
 app.use(require("./middleware/session"));
 app.use(require("./middleware/auth-state"));
 
-// This is the endpoint that clients are redirected to at the beginning of an authentication request.
-// FIXME: OIDC spec says we must support both GET and POST for this endpoint
-app.get("/authorize", require("./routes/oauth/authorize"));
-app.get("/token", require("./routes/oauth/get-token"));
+// FIXME: OIDC spec says authorize endpoint must support both GET and POST
+app.get("/authorize", require("./routes/oidc/authorize"));
+app.post("/token", require("./routes/oidc/get-token"));
+app.get("/userinfo", require("./middleware/oauth")("openid"), require("./routes/oidc/user-info"));
+app.get("/.well-known/openid-configuration", require("./routes/oidc/discovery-document"));
 
-app.get("/login",   require("./middleware/auth-stage")("start"), require("./routes/login"));
-app.post("/login",  require("./middleware/auth-stage")("start"), require("./routes/login"));
+app.get("/login", require("./routes/login"));
+app.post("/login", require("./routes/login"));
 app.get("/consent", require("./middleware/auth-stage")("consent"), require("./routes/consent"));
-app.get("/finish",  require("./middleware/auth-stage")("consent"), require("./routes/finish"));
+app.get("/finish", require("./middleware/auth-stage")("consent"), require("./routes/finish"));
+
+// we don't support RS256 signing (even though it's required by the spec), so return an empty list of keys
+app.get("/jwks", (req, res) => res.json([]));
+
+app.use((req, res, next) => {
+    res.status(404).send("Not found");
+});
+
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).send("Internal server error");
+});
 
 app.listen(config.port, () => console.log("Listening"));

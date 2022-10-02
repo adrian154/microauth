@@ -16,12 +16,12 @@ module.exports = async (req, res) => {
 
         const user = Users.getByEmail(req.body.email);
         if(!user) {
-            res.status(400).send(loginTemplate({asid: req.authState.id, error: 'Wrong username or email'}));
+            res.status(401).send(loginTemplate({asid: req.authState.id, error: 'Wrong username or email'}));
             return;
         }
 
         if(!(await cryptoHelper.comparePassword(req.body.password, Buffer.from(user.passwordHash, "base64"), Buffer.from(user.salt, "base64")))) {
-            res.status(400).send(loginTemplate({asid: req.authState.id, error: 'Wrong username or email'}));
+            res.status(401).send(loginTemplate({asid: req.authState.id, error: 'Wrong username or email'}));
             return;
         }
 

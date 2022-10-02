@@ -1,8 +1,7 @@
 const errorTemplate = require("../../templates/error");
+const {supportedScopes} = require("../../get-claims");
 const authStates = require("../../auth-state")
 const {Clients} = require("../../data");
-
-const KNOWN_SCOPES = ["openid", "profile", "email"];
 
 const readRequestParams = params => {
 
@@ -10,7 +9,7 @@ const readRequestParams = params => {
         throw new Error('Missing request parameter "scope"');
     }
 
-    const scopes = params.scope.split(" ").filter(scope => KNOWN_SCOPES.includes(scope));
+    const scopes = params.scope.split(" ").filter(scope => supportedScopes.includes(scope));
     if(!scopes.includes("openid")) {
         throw new Error('Requested scopes did not include "openid"');
     }

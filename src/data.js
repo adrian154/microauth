@@ -4,7 +4,6 @@ const Table = require("./crud");
 
 const db = new Database("data/microauth.db");
 db.pragma("foreign_keys = ON");
-db.pragma("journal_mode = WAL");
 
 const usersTable = new Table(db, "users", [
     "id STRING PRIMARY KEY",
@@ -27,7 +26,7 @@ const allowedCallbacksTable = new Table(db, "allowedCallbacks", [
 ]);
 
 db.exec("INSERT OR IGNORE INTO clients VALUES ('testclientid', 'testclientsecret', 'Test Client')");
-db.exec("INSERT OR IGNORE INTO allowedCallbacks VALUES ('testclientid', 'https://google.com/')")
+db.exec("INSERT OR IGNORE INTO allowedCallbacks VALUES ('testclientid', 'https://openidconnect.net/callback')")
 db.exec("INSERT OR IGNORE INTO users VALUES ('testuserid', 'user@mail.com', 'qiug9zTaU9hBBKBcOAxwgAbCdhj7gHXSGRhDA6hll58BWMnXEaxxPAc/uk+Hw45VdODzT7j5mFhGDJE9cjXO8A==', 'Fm3zil5BNjpmgJK/zqUhkg==')")
 
 const sessionsTable = new Table(db, "sessions", [
@@ -47,12 +46,16 @@ const authCodesTable = new Table(db, "authCodes", [
     "expiresTimestamp INTEGER NOT NULL",
     "accessToken STRING NOT NULL",
     "idToken STRING NOT NULL",
+    "FOREIGN KEY (clientId) REFERENCES clients(id)",
+    "FOREIGN KEY (accessToken) REFERENCES accessTokens(id)"
 ]);
 
 const accessTokensTable = new Table(db, "accessTokens", [
     "id STRING PRIMARY KEY",
     "expiresTimestamp INTEGER NOT NULL",
-    "grantedScopes STRING NOT NULL"
+    "grantedScopes STRING NOT NULL",
+    "userId STRING NOT NULL",
+    "FOREIGN KEY (userId) REFERENCES users(id)"
 ]);
 
 const Users = {
@@ -82,7 +85,8 @@ const AuthCodes = {
 };
 
 const AccessTokens = {
-    add: accessTokensTable.insert(["id", "expiresTimestamp", "grantedScopes"]).fn(),
+    add: accessTokensTable.insert(["id", "expiresTimestamp", "grantedScopes", "userId"]).fn(),
+    get: accessTokensTable.select("*").where("id = ?").fn(),
     deleteExpired: accessTokensTable.delete("expiresTimestamp < ?").fn()
 };
 

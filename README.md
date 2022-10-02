@@ -20,17 +20,6 @@ No. I have no clue what I'm doing.
 
 # TODO
 
-- Pages in progress
-    - Sign in 
-    - Sign up
-    - Error
-    - Set up 2FA
-    - Auth with 2FA
-    - Send password reset
-    - Reset password
-    - Edit user?
-        - change username
-        - change password
-        - change email
-        - manage 2fa
-        - delete account
+* User creation
+* Client management
+* 2FA

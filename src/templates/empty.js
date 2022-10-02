@@ -7,7 +7,10 @@ module.exports = (props, bodyContent) => "<!DOCTYPE html>" + html(
         meta({name: "viewport", content: "width=device-width, initial-scale=1"}),
         meta({name: "robots", content: "noindex, nofollow"}),
         title(props.title + " - " + config.tenant.friendlyName),
-        link({rel: "stylesheet", href: "/stylesheets/all.css"}),
+        props.manage ?
+            link({rel: "stylesheet", href: "/stylesheets/manage.css"})
+        :
+            link({rel: "stylesheet", href: "/stylesheets/all.css"}),
         props.stylesheet && link({rel: "stylesheet", href: props.stylesheet})
     ),
     body(

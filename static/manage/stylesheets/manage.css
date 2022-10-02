@@ -1,0 +1,135 @@
+@font-face {
+    font-family: 'password';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/manage/fonts/password.ttf);
+}
+
+body {
+    font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+main {
+    max-width: 50em;
+    margin: auto;
+}
+
+h1, h2 {
+    font-weight: 500;
+}
+
+.client {
+    border-radius: 5px;
+    padding: 1em 1.5em;
+    /*background-color: rgba(0, 0, 0, 5%);*/
+    border: 1px solid #ccc;
+    position: relative;
+}
+
+.client-name {
+    font-weight: 500;
+}
+
+td {
+    padding: 0.5em 0;
+    padding-right: 1em;
+}
+
+input[type="text"], textarea {
+    border: 1px solid #ccc;
+    padding: 0.5em;
+    width: 100%;
+    border-radius: 3px;
+    outline: none;
+    transition: 0.2s border;
+    font-size: 11pt;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-weight: normal;
+    margin-bottom: 1em;
+}
+
+label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5em;
+}
+
+.divider {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px solid #ccc;
+    margin: 1em 0;
+}
+
+button.round {
+    background: #2a5dde;
+    border-radius: 5px;
+    border: none;
+    color: #ffffff;
+    font-weight: 500;
+    font-family: inherit;
+    font-size: 1em;
+    padding: 0.5em 1em;
+}
+
+button[type="submit"] {
+    display: block;
+    margin-left: auto;
+}
+
+#add {
+    margin: 1em 0;
+}
+
+button.toggle {
+    position: absolute;
+    right: 1.1em;
+    top: 1em;
+    border: none;
+    font-size: 20pt;
+    font-family: inherit;
+    font-weight: bold;
+    background: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+.client-secret {
+    font-family: 'password';
+}
+
+.client-hidden {
+    display: none;
+}
+
+.client-hidden.shown {
+    display: initial;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td:first-child {
+    width: 40%;
+    font-weight: 500;
+}
+
+tr:not(:last-child) td {
+    border-bottom: 1px solid #eee;
+}
+
+td {
+    vertical-align: top;
+}
+
+.actions button.round {
+    display: block;
+    margin-bottom: 1em;
+    width: 9em;
+    background-color: #f01f1f;
+}

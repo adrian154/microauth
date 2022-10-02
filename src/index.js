@@ -33,6 +33,8 @@ app.post("/login", require("./routes/login"));
 app.get("/consent", require("./middleware/auth-stage")("consent"), require("./routes/consent"));
 app.get("/finish", require("./middleware/auth-stage")("consent"), require("./routes/finish"));
 
+app.get("/management-api/clients", require("./routes/management-api/clients"));
+
 // we don't support RS256 signing (even though it's required by the spec), so return an empty list of keys
 app.get("/jwks", (req, res) => res.json([]));
 

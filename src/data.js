@@ -65,6 +65,8 @@ const Users = {
 
 const Clients = {
     get: clientsTable.select("*").where("id = ?").fn(),
+    getAll: clientsTable.select("*").fn({all: true}),
+    getCallbacks: allowedCallbacksTable.select("url").where("clientId = ?").fn({all: true, pluck: true}),
     isAllowedCallback: allowedCallbacksTable.select("*").where("clientId = ? AND url = ?").fn()
 };
 
@@ -92,9 +94,9 @@ const AccessTokens = {
 
 setInterval(() => {
     console.log("Cleaning up database...");
-    Sessions.deleteExpired();
-    AuthCodes.deleteExpired();
-    AccessTokens.deleteExpired();
+    Sessions.deleteExpired(Date.now());
+    AuthCodes.deleteExpired(Date.now());
+    AccessTokens.deleteExpired(Date.now());
 }, config.dbCleanupInterval * 1000);
 
 module.exports = {Clients, Sessions, Users, AuthCodes, AccessTokens};

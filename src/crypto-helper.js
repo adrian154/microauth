@@ -1,6 +1,7 @@
 const crypto = require("crypto");
 
 module.exports = {
+    generateShortId: () => crypto.randomFillSync(Buffer.alloc(18)).toString("base64url"),
     generateId: () => crypto.randomFillSync(Buffer.alloc(36)).toString("base64url"),
     hashPassword: password => new Promise((resolve, reject) => {
         const salt = crypto.randomFillSync(Buffer.alloc(16));

@@ -14,6 +14,13 @@ setInterval(() => {
 module.exports = {
     begin: properties => {
         const id = generateId();
+        properties.getNextUrl = () => {
+            switch(properties.stage) {
+                case "start": return `/login?asid=${id}`;
+                case "consent": return `/consent?asid=${id}`;
+            }
+        };
+        properties.id = id;
         states[id] = {properties, expiresAt: Date.now() + config.authStates.maxAge * 1000};
         return id;
     },

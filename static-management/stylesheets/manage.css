@@ -7,6 +7,7 @@
 
 body {
     font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    margin-top: 2em;
 }
 
 main {
@@ -21,9 +22,9 @@ h1, h2 {
 .client {
     border-radius: 5px;
     padding: 1em 1.5em;
-    /*background-color: rgba(0, 0, 0, 5%);*/
     border: 1px solid #ccc;
     position: relative;
+    margin: 1em 0;
 }
 
 .client-name {
@@ -87,7 +88,7 @@ button.toggle {
     right: 1.1em;
     top: 1em;
     border: none;
-    font-size: 20pt;
+    font-size: 24pt;
     font-family: inherit;
     font-weight: bold;
     background: none;
@@ -98,7 +99,7 @@ button {
 }
 
 .client-secret {
-    font-family: 'password';
+    font-family: 'password' !important;
 }
 
 .client-hidden {
@@ -129,7 +130,40 @@ td {
 
 .actions button.round {
     display: block;
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
     width: 9em;
     background-color: #f01f1f;
+}
+
+dialog {
+    width: 20em;
+}
+
+.close-button {
+    position: absolute;
+    top: 0.3em;
+    right: 0.3em;
+    border: none;
+    background: none;
+    font-size: 24pt;
+    z-index: 1;
+}
+
+.callbacks li {
+    padding: 0.5em 0;
+}
+
+.callbacks button {
+    border: none;
+    background: none;
+    /*display: none;*/
+    padding: 0;
+    font-size: 1.2em;
+    font-family: inherit;
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.callbacks li:hover button {
+    display: initial;
 }

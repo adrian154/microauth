@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noindex, nofollow">
+        <title>Manage Clients</title>
+        <link rel="stylesheet" href="stylesheets/manage.css">
+    </head>
+    <body>
+        <main>
+
+            <button class="round" id="add-button">+ Add Client</button>
+            <div id="clients"></div>
+        
+            <div class="client">
+            <button class="toggle">+</button>
+            <h1>Client Name</h1>
+            <div class="client-hidden shown">
+
+                <table>
+                    <tr>
+                        <td>Info</td>
+                        <td>
+                            <label>Client ID</label>
+                            <input class="client-id" type="text" readonly>
+                            <label>Client Secret</label>
+                            <input class="client-secret" type="text" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Settings</td>
+                        <td>
+                            <form>
+                                <label>Name</label>
+                                <input type="text" class="client-name" placeholder="Name..." required>
+                                <label>Allowed Callbacks</label>
+                                <ul class="callbacks">
+                                    <li>https://google.com/ <button>&times;</button></li>
+                                    <li><input type="text" placeholder="Callback..."></li>
+                                </ul>
+                                <button class="round" type="submit">Save</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Actions</td>
+                        <td class="actions">
+                            <button class="round">Delete Client</button>
+                            <button class="round">Rotate Secret</button>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <template id="client-template">
+                <div class="client">
+                    <button class="toggle">+</button>
+                    <h1>Client Name</h1>
+                    <div class="client-hidden">
+
+                        <table>
+                            <tr>
+                                <td>Info</td>
+                                <td>
+                                    <label>Client ID</label>
+                                    <input class="client-id" type="text" readonly>
+                                    <label>Client Secret</label>
+                                    <input class="client-secret" type="text" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Settings</td>
+                                <td>
+                                    <form>
+                                        <label>Name</label>
+                                        <input type="text" class="client-name" placeholder="Name..." required>
+                                        <label>Allowed Callbacks</label>
+                                        <textarea class="callbacks" cols="20" rows="5" placeholder="Newline-separated list of URLs..." required></textarea>
+                                        <button class="round" type="submit">Save</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Actions</td>
+                                <td class="actions">
+                                    <button class="round">Delete Client</button>
+                                    <button class="round">Rotate Secret</button>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </template>
+        
+            <dialog id="add-client">
+                <button class="close-button">&times;</button>
+                <form>
+                    <label for="new-client-name">Client Name</label>
+                    <input id="new-client-name" type="text" required>
+                    <label for="new-client-callbacks">Allowed Callbacks</label>
+                    <textarea id="new-client-callbacks" required></textarea>
+                    <button type="submit" class="round">Add</button>
+                </form>
+            </dialog>
+
+            <script src="scripts/clients.js"></script>
+        
+        </main>
+    </body>
+</html>

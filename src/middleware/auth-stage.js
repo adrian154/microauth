@@ -7,7 +7,7 @@ module.exports = stage => (req, res, next) => {
         return;
     }
     
-    if(req.authState.stage != stage) {
+    if(stage && req.authState.stage != stage) {
         res.redirect(req.authState.getNextUrl());
         return;
     }

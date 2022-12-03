@@ -1,6 +1,6 @@
 const errorTemplate = require("../../templates/error");
 const {supportedScopes} = require("../../get-claims");
-const authStates = require("../../auth-state")
+const authStates = require("../../auth-state");
 const {Clients} = require("../../data");
 
 const readRequestParams = params => {
@@ -103,13 +103,7 @@ module.exports = (req, res) => {
     const authState = {
         authRequest,
         user: null,
-        stage: "start",
-        getNextUrl: () => {
-            switch(authState.stage) {
-                case "start": return `/login?asid=${authState.id}`;
-                case "consent": return `/consent?asid=${authState.id}`;
-            }
-        }
+        stage: "start"
     };
 
     const authStateId = authStates.begin(authState);

@@ -24,11 +24,16 @@ module.exports = async (req, res) => {
             res.status(401).send(loginTemplate({asid: req.authState.id, error: 'Wrong username or email'}));
             return;
         }
-
-        req.authState.stage = "consent";
+        
         req.authState.user = user;
         beginSession(req, res);
-        res.redirect(req.authState.getNextUrl());
+        if(req.authState.internal) {
+            console.log("redirecting to " + req.authState.redirect);
+            res.redirect(req.authState.redirect);
+        } else {
+            req.authState.stage = "consent";
+            res.redirect(req.authState.getNextUrl());
+        }
 
     }
 

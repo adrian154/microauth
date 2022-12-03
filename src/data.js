@@ -10,6 +10,7 @@ const usersTable = new Table(db, "users", [
     "email STRING NOT NULL UNIQUE",
     "passwordHash STRING NOT NULL",
     "salt STRING NOT NULL",
+    "isAdmin INTEGER NOT NULL"
 ]);
 
 const clientsTable = new Table(db, "clients", [
@@ -27,7 +28,7 @@ const allowedCallbacksTable = new Table(db, "allowedCallbacks", [
 
 db.exec("INSERT OR IGNORE INTO clients VALUES ('testclientid', 'testclientsecret', 'Test Client')");
 db.exec("INSERT OR IGNORE INTO allowedCallbacks VALUES ('testclientid', 'https://openidconnect.net/callback')")
-db.exec("INSERT OR IGNORE INTO users VALUES ('testuserid', 'user@mail.com', 'qiug9zTaU9hBBKBcOAxwgAbCdhj7gHXSGRhDA6hll58BWMnXEaxxPAc/uk+Hw45VdODzT7j5mFhGDJE9cjXO8A==', 'Fm3zil5BNjpmgJK/zqUhkg==')")
+db.exec("INSERT OR IGNORE INTO users VALUES ('testuserid', 'user@mail.com', 'qiug9zTaU9hBBKBcOAxwgAbCdhj7gHXSGRhDA6hll58BWMnXEaxxPAc/uk+Hw45VdODzT7j5mFhGDJE9cjXO8A==', 'Fm3zil5BNjpmgJK/zqUhkg==', 1)")
 
 const sessionsTable = new Table(db, "sessions", [
     "id STRING PRIMARY KEY",

@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
         asid: req.authState.id, 
         email: req.authState.user.email,
         clientName: req.authState.authRequest.client.friendlyName,
-        logo: req.authRequest.authRequest.client.logoUrl
+        logo: req.authState.authRequest.client.logoUrl
     }));
 
 };

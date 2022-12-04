@@ -52,6 +52,7 @@ router.get("/clients", require("./routes/management-api/clients"));
 router.post("/clients", require("./routes/management-api/add-client"));
 router.put("/clients/:clientId", require("./routes/management-api/edit-client"));
 router.delete("/clients/:clientId", require("./routes/management-api/delete-client"));
+router.post("/clients/:clientId/secret", require("./routes/management-api/rotate-secret"));
 router.put("/clients/:clientId/callbacks/:callback", require("./routes/management-api/add-callback"));
 router.delete("/clients/:clientId/callbacks/:callback", require("./routes/management-api/delete-callback"));
 app.use("/management-api", router);

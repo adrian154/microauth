@@ -52,7 +52,8 @@ const addClient = client => {
     });
 
     clone.querySelector(".client-id").value = client.id;
-    clone.querySelector(".client-secret").value = client.secret;
+    const secret = clone.querySelector(".client-secret");
+    secret.value = client.secret;
 
     const friendlyName = clone.querySelector(".client-name"),
           logoUrl = clone.querySelector(".logo-url");
@@ -89,6 +90,19 @@ const addClient = client => {
                     element.remove();
                 } else {
                     alert("Failed to delete client");
+                }
+            });
+        }
+    });
+
+    clone.querySelector(".rotate-secret").addEventListener("click", () => {
+        if(confirmWithName(`Are you sure you want to rotate the secret for ${client.friendlyName}?`)) {
+            fetch(`/management-api/clients/${client.id}/secret`, {method: "POST"}).then(resp => {
+                if(resp.ok) {
+                    resp.json().then(newSecret => secret.value = newSecret);
+                    alert("Secret updated");
+                } else {
+                    alert("Failed to rotate secret");
                 }
             });
         }

@@ -69,6 +69,7 @@ const Clients = {
     add: clientsTable.insert(["id", "secret", "friendlyName", "logoUrl"]).fn(),
     get: clientsTable.select("*").where("id = ?").fn(),
     update: clientsTable.update({friendlyName: ":name", logoUrl: ":logoUrl"}).where("id = :id").fn(),
+    updateSecret: clientsTable.update({secret: ":secret"}).where("id = :id").fn(),
     getAll: clientsTable.select("*").fn({all: true}),
     _delete: clientsTable.delete("id = ?").fn(),
     delete: db.transaction(id => {

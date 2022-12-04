@@ -4,16 +4,6 @@ const clientTemplate = document.getElementById("client-template");
 const addClient = client => {
 
     const clone = clientTemplate.content.cloneNode(true);
-        
-    const hidden = clone.querySelector(".client-hidden");
-    const toggle = clone.querySelector(".toggle");
-    toggle.addEventListener("click", () => {
-        if(hidden.classList.toggle("shown")) {
-            toggle.textContent = "\u2212";
-        } else {
-            toggle.textContent = "+";
-        }
-    });
 
     const title = clone.querySelector("h1");
     title.textContent = client.friendlyName;
@@ -54,6 +44,7 @@ const addClient = client => {
         }).then(resp => {
             if(resp.ok) {
                 addCallback(newCallback.value);
+                newCallback.value = "";
             } else {
                 alert("Failed to add callback");
             }
@@ -62,18 +53,55 @@ const addClient = client => {
 
     clone.querySelector(".client-id").value = client.id;
     clone.querySelector(".client-secret").value = client.secret;
-    clone.querySelector(".client-name").value = client.friendlyName;
+
+    const friendlyName = clone.querySelector(".client-name"),
+          logoUrl = clone.querySelector(".logo-url");
+
+    friendlyName.value = client.friendlyName;
+    logoUrl.value = client.logoUrl;
+    clone.querySelector(".appearance").addEventListener("submit", event => {
+        event.preventDefault();
+        fetch(`/management-api/clients/${encodeURIComponent(client.id)}`, {
+            method: "PUT",
+            headers: {"content-type": "application/json"},
+            body: JSON.stringify({
+                name: friendlyName.value,
+                logoUrl: logoUrl.value
+            })
+        }).then(resp => {
+            if(resp.ok) {
+                title.textContent = friendlyName.value;
+                client.friendlyName = friendlyName.value;
+                alert(`Updated ${client.friendlyName}`);
+            } else {
+                alert(`Failed to update properties for ${client.friendlyName}`);
+            }
+        });
+    });
+
+    const confirmWithName = message => prompt(message + " This action may be permanent.\n\nPlease enter the name of the application to continue.") == client.friendlyName;
+
+    const element = clone.querySelector(".client");
+    clone.querySelector(".delete-client").addEventListener("click", () => {
+        if(confirmWithName(`Are you sure you want to delete ${client.friendlyName}?`)) {
+            fetch(`/management-api/clients/${client.id}`, {method: "DELETE"}).then(resp => {
+                if(resp.ok) {
+                    element.remove();
+                } else {
+                    alert("Failed to delete client");
+                }
+            });
+        }
+    });
 
     clientsList.append(clone);
 
 };
 
 fetch("/management-api/clients").then(req => req.json()).then(clients => {
-
     for(const client of clients) {
         addClient(client);
     }
-
 });
 
 const addClientDialog = document.getElementById("add-client");

@@ -67,7 +67,6 @@
 
             <template id="client-template">
                 <div class="client">
-                    <button class="toggle">+</button>
                     <h1>Client Name</h1>
                     <div class="client-hidden">
 
@@ -82,9 +81,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Settings</td>
+                                <td>Appearance</td>
                                 <td>
-                                    <form>
+                                    <form class="appearance">
                                         <label>Name</label>
                                         <input type="text" class="client-name" placeholder="Name..." required>
                                         <label>Logo URL (optional)</label>
@@ -109,8 +108,8 @@
                             <tr>
                                 <td>Actions</td>
                                 <td class="actions">
-                                    <button class="round">Delete Client</button>
-                                    <button class="round">Rotate Secret</button>
+                                    <button class="round delete-client">Delete Client</button>
+                                    <button class="round rotate-secret">Rotate Secret</button>
                                 </td>
                             </tr>
                         </table>

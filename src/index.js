@@ -41,14 +41,20 @@ app.get("/finish", requireAuthStage("consent"), require("./routes/finish"));
 
 app.use("/manage", promptAdminLogin, express.static("static-management"))
 
-app.use(express.json());
-app.get("/management-api/clients", requireAdmin, require("./routes/management-api/clients"));
-app.post("/management-api/clients", requireAdmin, require("./routes/management-api/add-client"));
-app.put("/management-api/clients/:clientId/callbacks/:callback", requireAdmin, require("./routes/management-api/add-callback"));
-app.delete("/management-api/clients/:clientId/callbacks/:callback", requireAdmin, require("./routes/management-api/delete-callback"));
-
 // we don't support RS256 signing (even though it's required by the spec), so return an empty list of keys
 app.get("/jwks", (req, res) => res.json([]));
+
+
+const router = express.Router();
+router.use(express.json());
+router.use(requireAdmin);
+router.get("/clients", require("./routes/management-api/clients"));
+router.post("/clients", require("./routes/management-api/add-client"));
+router.put("/clients/:clientId", require("./routes/management-api/edit-client"));
+router.delete("/clients/:clientId", require("./routes/management-api/delete-client"));
+router.put("/clients/:clientId/callbacks/:callback", require("./routes/management-api/add-callback"));
+router.delete("/clients/:clientId/callbacks/:callback", require("./routes/management-api/delete-callback"));
+app.use("/management-api", router);
 
 app.use((req, res, next) => {
     res.status(404).send("Not found");

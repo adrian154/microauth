@@ -68,11 +68,19 @@ const Users = {
 const Clients = {
     add: clientsTable.insert(["id", "secret", "friendlyName", "logoUrl"]).fn(),
     get: clientsTable.select("*").where("id = ?").fn(),
+    update: clientsTable.update({friendlyName: ":name", logoUrl: ":logoUrl"}).where("id = :id").fn(),
     getAll: clientsTable.select("*").fn({all: true}),
+    _delete: clientsTable.delete("id = ?").fn(),
+    delete: db.transaction(id => {
+        AuthCodes._deleteForClient(id);
+        Clients._deleteCallbacks(id);
+        Clients._delete(id);
+    }),
     getCallbacks: allowedCallbacksTable.select("url").where("clientId = ?").fn({all: true, pluck: true}),
     isAllowedCallback: allowedCallbacksTable.select("*").where("clientId = ? AND url = ?").fn(),
     addCallback: allowedCallbacksTable.insert(["clientId", "url"]).fn(),
     deleteCallback: allowedCallbacksTable.delete("clientId = ? AND url = ?").fn(),
+    _deleteCallbacks: allowedCallbacksTable.delete("clientId = ?").fn()
 };
 
 const Sessions = {
@@ -104,7 +112,8 @@ const AuthCodes = {
         }
     },
     delete: authCodesTable.delete("id = ?").fn(),
-    deleteExpired: authCodesTable.delete("expiresTimestamp < ?").fn()
+    deleteExpired: authCodesTable.delete("expiresTimestamp < ?").fn(),
+    _deleteForClient: authCodesTable.delete("clientId = ?").fn()
 };
 
 const AccessTokens = {

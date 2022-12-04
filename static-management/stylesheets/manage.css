@@ -79,31 +79,12 @@ button[type="submit"] {
     margin: 1em 0;
 }
 
-button.toggle {
-    position: absolute;
-    right: 1.1em;
-    top: 1em;
-    border: none;
-    font-size: 24pt;
-    font-family: inherit;
-    font-weight: bold;
-    background: none;
-}
-
 button {
     cursor: pointer;
 }
 
 .client-secret {
     font-family: 'password' !important;
-}
-
-.client-hidden {
-    display: none;
-}
-
-.client-hidden.shown {
-    display: initial;
 }
 
 table {

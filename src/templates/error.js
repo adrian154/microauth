@@ -7,4 +7,4 @@ module.exports = errorMessage => base({title: "Error", stylesheet: "/stylesheets
         p(b("Technical Details")),
         code({id: "message"}, errorMessage)
     )
-])
+]);

@@ -12,6 +12,6 @@ module.exports = (req, res) => res.json({
     response_modes_supported: ["query"],
     grant_types_supported: ["authorization_code"],
     id_token_signing_alg_values_supported: ["HS256"],
-    token_endpoint_auth_methods_supported: ["client_secret_basic"],
+    token_endpoint_auth_methods_supported: ["client_secret_basic", "client_secret_post"],
     claim_types_supported: ["aud", "email", "email_verified", "name", "iat", "iss", "sub"]
 });

@@ -17,6 +17,7 @@ const clientsTable = new Table(db, "clients", [
     "id STRING PRIMARY KEY",
     "secret STRING NOT NULL",
     "friendlyName STRING NOT NULL",
+    "logoUrl STRING"
 ]);
 
 const allowedCallbacksTable = new Table(db, "allowedCallbacks", [
@@ -26,7 +27,7 @@ const allowedCallbacksTable = new Table(db, "allowedCallbacks", [
     "FOREIGN KEY (clientId) REFERENCES clients(id)"
 ]);
 
-db.exec("INSERT OR IGNORE INTO clients VALUES ('testclientid', 'testclientsecret', 'Test Client')");
+db.exec("INSERT OR IGNORE INTO clients VALUES ('testclientid', 'testclientsecret', 'Test Client', null)");
 db.exec("INSERT OR IGNORE INTO allowedCallbacks VALUES ('testclientid', 'https://openidconnect.net/callback')")
 db.exec("INSERT OR IGNORE INTO users VALUES ('testuserid', 'user@mail.com', 'qiug9zTaU9hBBKBcOAxwgAbCdhj7gHXSGRhDA6hll58BWMnXEaxxPAc/uk+Hw45VdODzT7j5mFhGDJE9cjXO8A==', 'Fm3zil5BNjpmgJK/zqUhkg==', 1)")
 
@@ -65,36 +66,63 @@ const Users = {
 };
 
 const Clients = {
+    add: clientsTable.insert(["id", "secret", "friendlyName", "logoUrl"]).fn(),
     get: clientsTable.select("*").where("id = ?").fn(),
     getAll: clientsTable.select("*").fn({all: true}),
     getCallbacks: allowedCallbacksTable.select("url").where("clientId = ?").fn({all: true, pluck: true}),
-    isAllowedCallback: allowedCallbacksTable.select("*").where("clientId = ? AND url = ?").fn()
+    isAllowedCallback: allowedCallbacksTable.select("*").where("clientId = ? AND url = ?").fn(),
+    addCallback: allowedCallbacksTable.insert(["clientId", "url"]).fn(),
+    deleteCallback: allowedCallbacksTable.delete("clientId = ? AND url = ?").fn(),
 };
 
 const Sessions = {
     add: sessionsTable.insert(["id", "userId", "initiatorAddr", "createdTimestamp", "expiresTimestamp", "lastAuthTimestamp"]).fn(),
     _updateAuthTimestamp: sessionsTable.update({lastAuthTimestamp: ":timestamp"}).where("id = :id").fn(),
     renewAuthTimestamp: id => Sessions._updateAuthTimestamp({timestamp: Date.now(), id}),  
-    get: sessionsTable.select("*").where("id = ?").fn(),
+    _get: sessionsTable.select("*").where("id = ?").fn(),
+    get: id => {
+        const session = Sessions._get(id);
+        if(session?.expiresTimestamp < Date.now()) {
+            Sessions.delete(id);
+        } else {
+            return session;
+        }
+    },
     delete: sessionsTable.delete("id = ?").fn(),
     deleteExpired: sessionsTable.delete("expiresTimestamp < ?").fn()
 };
 
 const AuthCodes = {
     add: authCodesTable.insert(["id", "clientId", "expiresTimestamp", "accessToken", "idToken"]).fn(),
-    get: authCodesTable.select("*").where("id = ? AND clientId = ?").fn(),
+    _get: authCodesTable.select("*").where("id = ? AND clientId = ?").fn(),
+    get: (id, clientId) => {
+        const authCode = AuthCodes._get(id, clientId);
+        if(authCode?.expiresTimestamp < Date.now()) {
+            AuthCodes.delete(id);
+        } else {
+            return authCode;
+        }
+    },
     delete: authCodesTable.delete("id = ?").fn(),
     deleteExpired: authCodesTable.delete("expiresTimestamp < ?").fn()
 };
 
 const AccessTokens = {
     add: accessTokensTable.insert(["id", "expiresTimestamp", "grantedScopes", "userId"]).fn(),
-    get: accessTokensTable.select("*").where("id = ?").fn(),
+    _get: accessTokensTable.select("*").where("id = ?").fn(),
+    get: (id) => {
+        const accessToken = AccessTokens._get(id);
+        if(accessToken?.expiresTimestamp < Date.now()) {
+            AccessTokens.delete(id);
+        } else {
+            return accessToken;
+        }
+    },
+    delete: accessTokensTable.delete("id = ?").fn(),
     deleteExpired: accessTokensTable.delete("expiresTimestamp < ?").fn()
 };
 
 setInterval(() => {
-    console.log("Cleaning up database...");
     Sessions.deleteExpired(Date.now());
     AuthCodes.deleteExpired(Date.now());
     AccessTokens.deleteExpired(Date.now());

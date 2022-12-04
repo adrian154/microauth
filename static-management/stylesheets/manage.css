@@ -27,10 +27,6 @@ h1, h2 {
     margin: 1em 0;
 }
 
-.client-name {
-    font-weight: 500;
-}
-
 td {
     padding: 0.5em 0;
     padding-right: 1em;
@@ -153,10 +149,9 @@ dialog {
     padding: 0.5em 0;
 }
 
-.callbacks button {
+.callbacks button.delete {
     border: none;
     background: none;
-    /*display: none;*/
     padding: 0;
     font-size: 1.2em;
     font-family: inherit;
@@ -166,4 +161,18 @@ dialog {
 
 .callbacks li:hover button {
     display: initial;
+}
+
+.new-callback {
+    display: flex;
+    flex-direction: row;
+}
+
+.new-callback input {
+    margin-bottom: 0;
+}
+
+.new-callback button {
+    margin-left: 0.5em;
+    width: 6em;
 }

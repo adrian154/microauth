@@ -5,7 +5,8 @@ module.exports = async (req, res) => {
     res.send(consentTemplate({
         asid: req.authState.id, 
         email: req.authState.user.email,
-        clientName: req.authState.authRequest.client.friendlyName
+        clientName: req.authState.authRequest.client.friendlyName,
+        logo: req.authRequest.authRequest.client.logoUrl
     }));
 
 };

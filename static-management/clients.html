@@ -13,7 +13,7 @@
             <button class="round" id="add-button">+ Add Client</button>
             <div id="clients"></div>
         
-            <div class="client">
+            <!--<div class="client">
             <button class="toggle">+</button>
             <h1>Client Name</h1>
             <div class="client-hidden shown">
@@ -29,18 +29,29 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Settings</td>
+                        <td>General Settings</td>
                         <td>
                             <form>
                                 <label>Name</label>
-                                <input type="text" class="client-name" placeholder="Name..." required>
-                                <label>Allowed Callbacks</label>
-                                <ul class="callbacks">
-                                    <li>https://google.com/ <button>&times;</button></li>
-                                    <li><input type="text" placeholder="Callback..."></li>
-                                </ul>
+                                <input type="text" placeholder="Name..." required>
+                                <label>Logo URL (optional)</label>
+                                <input type="text" placeholder="URL...">
                                 <button class="round" type="submit">Save</button>
                             </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Callbacks</td>
+                        <td>
+                            <ul class="callbacks">
+                                <li>https://google.com <button>&times;</button></li>
+                                <li>
+                                    <div class="new-callback">
+                                        <input type="text" placeholder="New callback...">
+                                        <button>+</button>
+                                    </div>
+                                </li>
+                            </ul>
                         </td>
                     </tr>
                     <tr>
@@ -52,7 +63,7 @@
                     </tr>
                 </table>
 
-            </div>
+            </div>-->
 
             <template id="client-template">
                 <div class="client">
@@ -76,10 +87,23 @@
                                     <form>
                                         <label>Name</label>
                                         <input type="text" class="client-name" placeholder="Name..." required>
-                                        <label>Allowed Callbacks</label>
-                                        <textarea class="callbacks" cols="20" rows="5" placeholder="Newline-separated list of URLs..." required></textarea>
+                                        <label>Logo URL (optional)</label>
+                                        <input type="text" class="logo-url" placeholder="URL...">
                                         <button class="round" type="submit">Save</button>
                                     </form>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Callbacks</td>
+                                <td>
+                                    <ul class="callbacks">
+                                        <li>
+                                            <div class="new-callback">
+                                                <input type="text" class="callback" placeholder="New callback...">
+                                                <button>Add +</button>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </td>
                             </tr>
                             <tr>
@@ -100,8 +124,6 @@
                 <form>
                     <label for="new-client-name">Client Name</label>
                     <input id="new-client-name" type="text" required>
-                    <label for="new-client-callbacks">Allowed Callbacks</label>
-                    <textarea id="new-client-callbacks" required></textarea>
                     <button type="submit" class="round">Add</button>
                 </form>
             </dialog>

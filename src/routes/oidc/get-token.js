@@ -56,7 +56,7 @@ module.exports = (req, res) => {
     }
 
     const authCode = AuthCodes.get(req.body.code, client.id);
-    if(!authCode || authCode.expiresTimestamp < Date.now()) {
+    if(!authCode) {
         res.status(401).json({error: "invalid_grant"});
         return;
     }

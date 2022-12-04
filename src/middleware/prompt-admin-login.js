@@ -1,11 +1,11 @@
+// Check if user has correct access for admin-only pages; redirect to login if necessary.
 const authStates = require("../auth-state");
 
 module.exports = (req, res, next) => {
     if(!req.session) {
         const authState = {
             stage: "start",
-            internal: true,
-            redirect: req.originalUrl
+            internalRedirect: req.originalUrl
         };
         authStates.begin(authState);
         res.redirect(authState.getNextUrl());

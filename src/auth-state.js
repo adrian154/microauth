@@ -1,3 +1,4 @@
+// Auth states store transient information throughout the signin process.
 const {generateId} = require("./crypto-helper");
 const config = require("../config.json");
 
@@ -25,12 +26,12 @@ module.exports = {
         return id;
     },
     get: id => {
-        const session = states[id];
-        if(session) {
-            if(session.expiresAt < Date.now()) {
+        const state = states[id];
+        if(state) {
+            if(state.expiresAt < Date.now()) {
                 delete states[id];
             } else {
-                return session.properties;
+                return state.properties;
             }
         }
     },

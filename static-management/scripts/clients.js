@@ -18,8 +18,47 @@ const addClient = client => {
     const title = clone.querySelector("h1");
     title.textContent = client.friendlyName;
 
-    const callbacks = clone.querySelector("textarea");
-    callbacks.textContent = client.callbacks.join("\n");
+    const callbacks = clone.querySelector(".callbacks"),
+          newCallback = clone.querySelector(".callback");
+
+    const addCallback = callback => {
+        const li = document.createElement("li");
+        const deleteButton = document.createElement("button");
+        deleteButton.classList.add("delete");
+        deleteButton.textContent = "\u00d7";
+        li.append(callback, " ", deleteButton);
+        callbacks.prepend(li);
+        deleteButton.addEventListener("click", () => {
+            if(confirm(`Are you sure you want to delete the callback "${callback}" from ${client.friendlyName}?`)) {
+                fetch(`/management-api/clients/${encodeURIComponent(client.id)}/callbacks/${encodeURIComponent(callback)}`, {
+                    method: "DELETE"
+                }).then(resp => {
+                    if(resp.ok) {
+                        li.remove();
+                    } else {
+                        alert("Failed to remove callback");
+                    }
+                });
+            }
+        });
+    };
+
+    for(const callback of client.callbacks) {
+        addCallback(callback);
+    }
+
+    // add callback logic
+    clone.querySelector(".new-callback").querySelector("button").addEventListener("click", () => {
+        fetch(`/management-api/clients/${encodeURIComponent(client.id)}/callbacks/${encodeURIComponent(newCallback.value)}`, {
+            method: "PUT"
+        }).then(resp => {
+            if(resp.ok) {
+                addCallback(newCallback.value);
+            } else {
+                alert("Failed to add callback");
+            }
+        });
+    });
 
     clone.querySelector(".client-id").value = client.id;
     clone.querySelector(".client-secret").value = client.secret;
@@ -41,31 +80,12 @@ const addClientDialog = document.getElementById("add-client");
 document.getElementById("add-button").addEventListener("click", () => addClientDialog.showModal());
 document.querySelector(".close-button").addEventListener("click", event => event.target.closest("dialog").close());
 
-document.getElementById("new-client-callbacks").addEventListener("input", event => {
-    try {
-        const urls = event.target.value.split('\n');
-        if(urls.length == 0) {
-            throw new Error();
-        }
-        for(const url of urls) {
-            new URL(url);
-        }
-        event.target.setCustomValidity("");
-    } catch(error) {
-        event.target.setCustomValidity("Callbacks must be a list of valid URLs");
-        event.target.reportValidity();
-    }
-});
-
 addClientDialog.querySelector("form").addEventListener("submit", event => {
     event.preventDefault();
     fetch("/management-api/clients", {
         method: "POST",
         headers: {"content-type": "application/json"},
-        body: JSON.stringify({
-            name: document.getElementById("new-client-name").value,
-            callbacks: document.getElementById("new-client-callbacks").value.split("\n")
-        })
+        body: JSON.stringify({name: document.getElementById("new-client-name").value})
     }).then(resp => {
         if(resp.ok) {
             location.reload();

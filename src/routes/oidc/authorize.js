@@ -41,7 +41,6 @@ const readRequestParams = params => {
     }
 
     const callbackUrl = new URL(redirectUri);
-
     if(params.request) {
         callbackUrl.searchParams.set("error", "request_not_supported");
         res.redirect(callbackUrl);
@@ -109,6 +108,7 @@ module.exports = (req, res) => {
     const authStateId = authStates.begin(authState);
     authState.id = authStateId;
 
+    // We need to authenticate if the user isn't already signed in, or if the client has indicated that we should reauthenticate.
     const authNeeded = !req.session ||
                        authRequest.prompt.includes("login") ||
                        !isNaN(authRequest.max_age) && Date.now() - req.session.lastAuthTimestamp > authRequest.max_age * 1000;

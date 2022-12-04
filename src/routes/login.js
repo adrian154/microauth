@@ -27,9 +27,8 @@ module.exports = async (req, res) => {
         
         req.authState.user = user;
         beginSession(req, res);
-        if(req.authState.internal) {
-            console.log("redirecting to " + req.authState.redirect);
-            res.redirect(req.authState.redirect);
+        if(req.authState.internalRedirect) {
+            res.redirect(req.authState.internalRedirect);
         } else {
             req.authState.stage = "consent";
             res.redirect(req.authState.getNextUrl());

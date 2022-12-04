@@ -1,6 +1,6 @@
+// Require an access token for a protected resource
 const {AccessTokens} = require("../data");
 
-// Require an access token for a protected resource
 module.exports = scope => (req, res, next) => {
     
     const authHeader = req.header("Authorization");
@@ -31,7 +31,7 @@ module.exports = scope => (req, res, next) => {
     }
 
     const accessToken = AccessTokens.get(token);
-    if(!accessToken || accessToken.expiresTimestamp < Date.now()) {
+    if(!accessToken) {
         res.status(400).header("WWW-Authenticate", 'error="invalid_token" error_description="Token is expired or invalid"').send();
         return;
     }

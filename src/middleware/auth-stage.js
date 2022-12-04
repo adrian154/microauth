@@ -1,3 +1,4 @@
+// Middleware to ensure that the user's auth state has the correct stage.
 const errorTemplate = require("../templates/error");
 
 module.exports = stage => (req, res, next) => {

@@ -3,7 +3,7 @@ const config = require("../../config.json");
 const empty = require("./empty");
 
 module.exports = (props, bodyContent) => empty(props, [
-    img({id: "logo", src: config.tenant.logoUrl}),
+    img({id: "logo", src: config.tenant.logoUrl || props.logo}),
     h1(props.title),
     bodyContent
 ]);

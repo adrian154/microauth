@@ -27,8 +27,6 @@ const allowedCallbacksTable = new Table(db, "allowedCallbacks", [
     "FOREIGN KEY (clientId) REFERENCES clients(id)"
 ]);
 
-db.exec("INSERT OR IGNORE INTO users VALUES ('testuserid', 'user@mail.com', 'qiug9zTaU9hBBKBcOAxwgAbCdhj7gHXSGRhDA6hll58BWMnXEaxxPAc/uk+Hw45VdODzT7j5mFhGDJE9cjXO8A==', 'Fm3zil5BNjpmgJK/zqUhkg==', 1)")
-
 const sessionsTable = new Table(db, "sessions", [
     "id STRING PRIMARY KEY",
     "userId STRING NOT NULL",
@@ -59,6 +57,7 @@ const accessTokensTable = new Table(db, "accessTokens", [
 ]);
 
 const Users = {
+    add: usersTable.insert(["id", "email", "passwordHash", "salt", "isAdmin"]).fn(),
     getById: usersTable.select("*").where("id = ?").fn(),
     getByEmail: usersTable.select("*").where("email = ?").fn()
 };

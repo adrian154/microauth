@@ -44,7 +44,6 @@ app.use("/manage", promptAdminLogin, express.static("static-management"))
 // we don't support RS256 signing (even though it's required by the spec), so return an empty list of keys
 app.get("/jwks", (req, res) => res.json([]));
 
-
 const router = express.Router();
 router.use(express.json());
 router.use(requireAdmin);

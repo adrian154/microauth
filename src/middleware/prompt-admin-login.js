@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
         };
         authStates.begin(authState);
         res.redirect(authState.getNextUrl());
-    } else if(!req.session.user.isAdmin) {
+    } else if(!req.session.user?.isAdmin) {
         res.sendStatus(401);
     } else {
         next();

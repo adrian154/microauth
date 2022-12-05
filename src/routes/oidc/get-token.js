@@ -22,14 +22,14 @@ module.exports = (req, res) => {
     const authHeader = req.header("Authorization");
     let clientId, clientSecret;
     if(authHeader) {
-
+        
         const authHeaderParts = authHeader.split(' ');
         if(authHeaderParts.length != 2 || authHeaderParts[0] != "Basic") {
             res.status(400).json({error: "invalid_request", error_description: 'Malformed authorization header or unsupported scheme'});
             return;
         }
 
-        [clientId, clientSecret] = Buffer.from(authHeaderParts[1], "base64").split(":");
+        [clientId, clientSecret] = Buffer.from(authHeaderParts[1], "base64").toString("utf-8").split(":");
 
     } else if(req.body.client_id && req.body.client_secret) {
         clientId = req.body.client_id;
